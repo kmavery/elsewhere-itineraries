@@ -67,7 +67,7 @@ const initialTarget = window.location.hash.replace("#", "");
 if (initialTarget) {
   activateTab(initialTarget);
 } else {
-  activateTab("adventure");
+  activateTab("beach");
 }
 
 window.addEventListener("hashchange", () => {
