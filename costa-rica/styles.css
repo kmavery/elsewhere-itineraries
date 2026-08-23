@@ -962,6 +962,10 @@ main a[target="_blank"]::after {
   background: #edf5f1;
 }
 
+.booking-callout-top {
+  margin-top: 28px;
+}
+
 .booking-callout span,
 .activity-group-heading span,
 .activity-card span {
