@@ -44,3 +44,16 @@ document.querySelectorAll('[data-check]').forEach(box => {
   box.checked = localStorage.getItem(key) === 'yes';
   box.addEventListener('change', () => localStorage.setItem(key, box.checked ? 'yes' : 'no'));
 });
+
+const revealLinkedDrawer = () => {
+  if (!location.hash) return;
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const drawer = target?.closest('details.excursion-drawer');
+  if (drawer) drawer.open = true;
+};
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', () => requestAnimationFrame(revealLinkedDrawer));
+});
+window.addEventListener('hashchange', revealLinkedDrawer);
+revealLinkedDrawer();
