@@ -1,4 +1,4 @@
-const selectionSchema = '2';
+const selectionSchema = '3';
 if (localStorage.getItem('abby-cr-selection-schema') !== selectionSchema) {
   Object.keys(localStorage)
     .filter(key => key.startsWith('abby-cr-'))
@@ -69,7 +69,7 @@ const setDecisionComplete = (key, complete) => {
 
 const transferDecisionKeys = ['transfer-sjo', 'transfer-guanacaste', 'transfer-lir'];
 
-document.querySelectorAll('.transfer').forEach((transfer, transferIndex) => {
+document.querySelectorAll('.transfer:not(.confirmed)').forEach((transfer, transferIndex) => {
   const leg = transfer.querySelector('h3').textContent.trim();
   const storageKey = `abby-cr-transport-${transferIndex}`;
   const savedValue = localStorage.getItem(storageKey);
@@ -122,7 +122,7 @@ const updateExcursionDecision = region => {
   setDecisionComplete(region === 'Arenal' ? 'arenal-choice' : 'guanacaste-choice', hasInterest);
 };
 
-document.querySelectorAll('.experience[data-kind="paid"]:not(.wide)').forEach((card, index) => {
+document.querySelectorAll('.experience[data-kind="paid"]:not(.wide):not([data-booking])').forEach((card, index) => {
   const region = card.closest('[aria-labelledby="tabacon-experiences"]') ? 'Arenal' : 'Guanacaste';
   const title = card.querySelector('h3').textContent.trim();
   const detail = card.querySelector('.kind').textContent.trim();
@@ -161,13 +161,14 @@ const updateSelectionEmail = () => {
     '',
     'Here are my current selections for the Costa Rica trip.',
     '',
-    'TRANSPORTATION'
+    'CONFIRMED TRANSPORTATION'
   ];
 
-  document.querySelectorAll('.transfer').forEach(transfer => {
+  document.querySelectorAll('.transfer.confirmed').forEach(transfer => {
     const leg = transfer.querySelector('h3').textContent.trim();
-    const selected = transfer.querySelector('[data-transport-choice]:checked');
-    lines.push(`- ${leg}: ${selected ? selected.value : 'Not selected yet'}`);
+    const provider = transfer.querySelector('.quote-head span:first-child')?.textContent.trim();
+    const time = transfer.querySelector('.travel-time')?.textContent.trim();
+    lines.push(`- ${leg}: ${provider} at ${time}`);
   });
 
   lines.push('', 'EXCURSIONS I’M INTERESTED IN');
